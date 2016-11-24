@@ -19,6 +19,10 @@ Currently it does not support an external kapacitor server since it wants to be 
 * Edit the `docker-compose.yml` file: set the TICKSCRIPT_STUDIO_INFLUXDB environment variables correctly for your influxdb server.
 * `docker-compose up -d`
 
+#### demo video
+
+https://www.youtube.com/watch?v=QGDXPUJ_An4
+
 ##developing on this project
 
 #### Development Pre-requisites
