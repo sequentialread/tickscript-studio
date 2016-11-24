@@ -17,6 +17,7 @@ https://www.youtube.com/watch?v=pKxCAkjBkq4
 ##developing on this project
 
 #### Development Pre-requisites
+
   * [graphviz](http://www.graphviz.org/Download..php) `dot` installed and on your `$PATH`. (`dot -V` returns successfully)
   * golang installed and available (`go run ...`)
   * node.js installed.
