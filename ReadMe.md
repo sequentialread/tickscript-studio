@@ -10,7 +10,7 @@ Currently it does not support an external kapacitor server since it wants to be 
 
 ## demo video
 
-https://www.youtube.com/watch?v=QGDXPUJ_An4
+#### https://www.youtube.com/watch?v=QGDXPUJ_An4
 
 [tickscript-studio on docker hub](https://hub.docker.com/r/sequentialread/tickscript-studio/)
 
