@@ -20,7 +20,10 @@ services:
          - kapacitor
   tickscript-studio:
     image: sequentialread/tickscript-studio:0.0.13
-    dns: 127.0.0.1
+    dns:
+    - 127.0.0.1
+    - 8.8.8.8
+    - 8.8.4.4
     ports:
     - '8081:8081'
     environment:
