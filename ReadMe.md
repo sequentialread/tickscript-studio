@@ -10,7 +10,7 @@ Currently it does not support an external kapacitor server since it wants to be 
 
 ![flow diagram](static/images/flow-diagram.png)
 
-#### build & run demo video
+## build, run, and demo video
 
 https://www.youtube.com/watch?v=pKxCAkjBkq4
 
