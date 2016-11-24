@@ -1,0 +1,22 @@
+<div class="modal-header">
+    <h3 class="modal-title">HTTP {{vm.statusCode}}</h3>
+</div>
+<div class="modal-body">
+  <h3>Request</h3>
+  <pre>{{vm.requestMethod}} {{vm.requestURL}}</pre>
+  <pre>
+{{vm.requestHeaders}}
+  </pre>
+  <pre ng-if="vm.requestBodyJSON">
+{{vm.requestBodyJSON}}
+  </pre>
+  <h3>Response</h3>
+  <pre>
+{{vm.responseBodyJSON}}
+  </pre>
+
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="vm.ok()">OK</button>
+</div>

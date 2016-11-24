@@ -1,0 +1,15 @@
+<h3 ng-show="vm.rowSet && vm.showTitle != 'false'" ng-bind="vm.rowSet.name"></h3>
+<table class="table" ng-show="vm.rowSet">
+<thead>
+  <tr>
+    <th ng-repeat="column in vm.rowSet.columns track by $index" ng-bind="column">
+    </th>
+  </tr>
+</thead>
+<tbody>
+  <tr ng-repeat="row in vm.rowSet.values track by $index">
+    <td ng-repeat="cell in row track by $index" ng-bind="cell">
+    </td>
+  </tr>
+</tbody>
+</table>

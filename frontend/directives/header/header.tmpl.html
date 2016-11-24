@@ -1,0 +1,18 @@
+
+<div class="jumbotron jumbotron-expanded">
+    <h3 class="title">TICKscript Studio</h3>
+    <a ng-href="{{vm.config.sourceURL}}" class="source-link">[source]</a>
+</div>
+<nav class="nav-expanded">
+  <ul class="nav nav-tabs">
+    <li ng-class="{'active': vm.getCurrentState().indexOf('home') != -1}">
+      <a ui-sref="home">Home</a>
+    </li>
+    <li ng-class="{'active': vm.getCurrentState().indexOf('sample') != -1}">
+      <a ui-sref="sample">Data Sampler</a>
+    </li>
+    <li ng-class="{'active': vm.getCurrentState().indexOf('test') != -1}">
+      <a ui-sref="test">TICKscript Tester</a>
+    </li>
+  </ul>
+</nav>

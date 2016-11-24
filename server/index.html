@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="ISO-8859-1">
+  <link rel="shortcut icon" href="data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAAMIOAADCDgAAAAAAAAAAAABrDYsAjhVnCI0WbA2LF3QNiBl8DYUahA2CHIwNfh+UDXwgnA17IqINeSSqDXYmsg1yKLsNcCnDDW4rxwVuK8YAkBNhDo8UZpeMFm3Fixd0w4cZfMOFG4TDgx2Lw4Afk8N9IJvDeiKjw3gkq8N2JrPDcii7w3Apw8VuK8h0Rjv1AI8SYRqPFGbWjBZt/4oXdP+HGXz/hRuE/4Ici/9+HZL/fB6a/3oio/94JKv/diaz/3Iou/9wKsP/bivJrGYs0wOPEmEajhRm1owWbf+KF3T/hxl8/4QZg/+JKJH/lUSl/49Aqf99J6X/dyOq/3Yns/9yKLv/cCrD/24ryaxoKtMDjxJhGo4UZtaMFm3/ihd0/4YXe/+WO5X/2rvc//Tr9f/x5/T/x6PZ/4Ezsf91JrL/cii7/3Aqw/9uK8msaCrTA48SYRqOFGbWjBZt/4oXdP+HGHz/w47B//Pq9f+yecD/wZTP//v5/f+reMz/dCOy/3Iou/9wKsP/bivJrGgq0wOPEmEajhRm1owWbf+KF3T/hxl8/5U5lP+cTqf/iDCe/7mHyv/+/v7/uY/V/3Qjsv9yKLv/cCrD/24ryaxoKtMDkBJiGo8UZtaMFm3/ihd0/4cZfP+HH4f/s3a6/+fV6//9/P7/7uP0/5ZVvv90JLL/cii7/3Aqw/9uK8msaCrTA5ESYxqPFGfWjBZt/4oXdP+FFnr/qV2n//n1+v/x5/T/xp7V/5JLt/93I6v/diaz/3Iou/9wKsP/bivJrGgq0wOPEmEajxRm1owWbf+KF3T/hRV6/7l8t//9+/3/rG+8/5FErf+wfsv/hTq0/3Ulsv9yKLv/cCrD/24ryaxoKtMDjxJhGo4UZtaMFm3/ihd0/4YWe/+fTJ//8ufz/+jX7P/q3O//7+T0/5BMu/90JLL/cii7/3Aqw/9uK8msaCrTA48SYRqOFGbWjBZt/4oXdP+HGXz/hRyF/6RZqv/Lo9L/yKHV/5tau/94Jav/diaz/3Iou/9wKsP/bivJrGgq0wOPEmEajhRm1owWbf+KF3T/hxl8/4UbhP+BGor/fx6T/3wfmv95H6L/eCSr/3Yms/9yKLv/cCrD/24ryaxoKtMDjxJhGo8UZtaMFm3/ihd0/4cZfP+FG4T/gx2L/4Afk/99IJv/eiKj/3gkq/92JrP/cii7/3Aqw/9uK8msZizTA5ATYQ6PFGaXjBZtxYsXdMOHGXzDhRuEw4Mdi8OAH5PDfSCbw3oio8N4JKvDdiazw3Iou8NwKcPFbivIdEY79QBrDYsAjhVnCI0WbA2LF3QNiBl8DYUahA2CHIwNfh+UDXwgnA17IqINeSSqDXYmsg1yKLsNcCnDDW4rxwVuK8YAgAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAEAAA==" />
+  <title>tickscript-studio</title>
+  <script>
+    window.viewModel = {{.}};
+  </script>
+  <script src="static/vendor.js?v={{.Version}}"></script>
+  <script src="static/index.js?v={{.Version}}"></script>
+  <link rel="stylesheet" type="text/css" href="static/bootstrap.css?v={{.Version}}">
+  <link rel="stylesheet" type="text/css" href="static/bundle.css?v={{.Version}}">
+</head>
+<body  class="container" ng-app="client" ng-strict-di>
+  <my-header></my-header>
+  <div ui-view class="ui-view-expanded"></div>
+  <loading-indicator active-requests="activeRequests"></loading-indicator>
+  <div id="modal-append"><div>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<div class="loading-modal" ng-if="vm.activeRequests.length > 0">
+  <div class="loader">loading</div>
+
+  <div class="long-running-requests" ng-show="vm.longRunningRequests.length">
+    I seem to be timing out trying to connect to:
+    <ul>
+      <li ng-repeat="request in vm.longRunningRequests track by request.id">
+        {{request.url}}
+      </li>
+    </ul>
+  </div>
+
+</div>

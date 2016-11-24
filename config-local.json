@@ -1,0 +1,22 @@
+{
+  "sourceURL": "https://github.com/sequentialread/tickscript-studio",
+  "listenPort":"8081",
+  "serveHTTPS": false,
+  "influxDbScheme": "http",
+  "influxDbHost": "localhost:8086",
+  "influxDbURL": "influxdb/",
+  "influxDbUsername": "$TICKSCRIPT_STUDIO_INFLUXDB_USERNAME",
+  "influxDbPassword": "$TICKSCRIPT_STUDIO_INFLUXDB_PASSWORD",
+  "kapacitorScheme": "http",
+  "kapacitorHost": "my-local-docker-machine:9092",
+  "kapacitorURL": "kapacitor/",
+  "kapacitorUsername": "$TICKSCRIPT_STUDIO_KAPACITOR_USERNAME",
+  "kapacitorPassword": "$TICKSCRIPT_STUDIO_KAPACITOR_PASSWORD",
+  "kapacitorLogFolder": "C:/Users/username/Desktop/kapacitor-logs",
+  "bashPath": "C:/Program Files/Git/bin/bash.exe",
+  "errorLogType": "human",
+  "gulpAppSourceMaps": true,
+  "gulpAppMinify": false,
+  "gulpVendorSourceMaps": false,
+  "gulpVendorMinify": false
+}

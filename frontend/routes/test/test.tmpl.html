@@ -1,0 +1,143 @@
+
+<h3>TICKscript Tester</h3>
+
+<div class="well well-sm " style="margin:20px; display:inline-block;">
+
+  <div  ng-show="vm.samples.length" >
+    <h4 style="margin-top:2px;">Data Samples:</h4>
+    <div class="top-align-container">
+
+      <div class="top-align-element">
+        <select size="10" class="data-sample-selector"
+          ng-model="vm.selectedSample"
+          ng-change="vm.selectedSampleChanged()"
+          ng-options=" sample as sample for sample in vm.samples track by sample">
+        </select>
+      </div>
+      <div class="top-align-spacer">
+      </div>
+      <div class="top-align-element" style="width:50%;">
+        <div  style="display:inline-block; height:175px;">
+          Avaliable Tags:
+          <ul>
+            <li ng-repeat="tag in vm.tags track by tag.name" ng-bind="tag.name">
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="top-align-element" style="width:50%;">
+        <div  style="display:inline-block;  height:175px;">
+          Avaliable Metrics:
+          <ul>
+            <li ng-repeat="metric in vm.metrics track by metric.name" ng-bind="metric.name">
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="top-align-element">
+        <button ng-click="vm.test()" class="btn btn-primary ">
+          <span class="glyphicon glyphicon-ok"></span>
+          Test
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <p ng-show="vm.samples.length == 0">There are currently no saved samples. Please visit the "Data Sampler" tab to generate some.</p>
+
+</div>
+
+<h4></h4>
+<div class="row">
+  <div class="col-sm-12">
+    <spoiler title="Input from Sample " initially-open="vm.editSampleMode">
+      <div ng-show="!vm.editSampleMode" style="height:300px; width:100%; overflow:auto;">
+        <pre style=" width:100%;" ng-bind="vm.sampleLineProtocol">
+        </pre>
+      </div>
+      <button ng-show="!vm.editSampleMode" ng-click="vm.editSample()" class="btn btn-primary" style="margin:5px;">
+        Edit Sample
+      </button>
+
+      <textarea ng-show="vm.editSampleMode"
+                class="textarea-full"
+                ng-model="vm.sampleLineProtocol"
+                ng-change="vm.sampleLineProtocolChanged()"></textarea>
+    </spoiler>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12 col-md-6">
+    <h4>TICKscript</h4>
+    <textarea class="textarea-full form-control" ng-model="vm.tickScript" ng-change="vm.tickScriptChanged()"></textarea>
+  </div>
+
+  <div class="col-sm-12 col-md-6">
+    <h4>Task Metadata</h4>
+    <p ng-show="vm.tickMetadataErrorMessage != ''">
+      <label class="label label-danger"
+             ng-bind="vm.tickMetadataErrorMessage">
+      </label>
+    </p>
+    <textarea class="textarea-full form-control"
+              ng-class="vm.tickMetadataErrorMessage != '' ? 'has-error' : ''"
+              ng-model="vm.tickMetadata"
+              ng-change="vm.tickMetadataChanged()">
+    </textarea>
+
+  </div>
+</div>
+
+<div class="row">
+
+  <div class="col-sm-12">
+    <h2>
+      Output
+    </h2>
+    <i class="glyphicon glyphicon-refresh glyphicon-spin" ng-show="vm.polling != null"></i>
+    <button class="btn btn-default" ng-click="vm.stopPollingNow()" ng-show="vm.polling != null">
+      <i class="glyphicon glyphicon-remove" ></i>
+    </button>
+    <span ng-show="vm.polling != null" style="display:inline-block;float:right;">
+      Note that this will continue to poll for 1 minute, its hard to tell when Kapacitor is "Done".
+    </span>
+  </div>
+  <div class="col-sm-12" ng-show="vm.graphUrl">
+    <h4>Flow Statistics</h4>
+    <div style="overflow-x: auto;" >
+      <img style="height:70px;" ng-src="{{vm.graphUrl}}" ></img>
+    </div>
+
+  </div>
+
+  <div class="col-sm-12" ng-show="vm.alerts.length">
+    <h4>
+      Alerts
+    </h4>
+    <div ng-repeat="alert in vm.alerts track by $index">
+      {{alert.username}} posting to {{alert.channel}}: <p>{{alert.text}}</p>
+      <blockquote ng-repeat="attachment in alert.attachments track by $index"
+                  ng-style="vm.getBlockQuoteColorStyle(attachment.color)">
+        <p>{{attachment.text || attachment.fallback }}</p>
+      </blockquote>
+    </div>
+  </div>
+  <div class="col-sm-12" ng-show="vm.output.length">
+    <h4>
+      InfluxDb  Output
+    </h4>
+    <div ng-repeat="series in vm.output track by series.name">
+      <influx-row-set row-set="series" >
+      </influx-row-set>
+    </div>
+  </div>
+  <div class="col-sm-12" ng-show="vm.kapacitorLogs">
+    <h4 style="display:inline-block;">
+      Kapacitor Logs
+    </h4>
+    <pre  class="word-wrap" ng-bind="vm.kapacitorLogs">
+    </pre>
+  </div>
+  <div class="col-sm-12" style="width:100%; height:600px;">
+  </div>
+</div>

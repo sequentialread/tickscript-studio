@@ -1,0 +1,46 @@
+.ui-view-expanded {
+  margin-left: -20px;
+  margin-right: -20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  padding-top: 1px;
+  padding-bottom: 100px;
+}
+
+.nav-expanded, .jumbotron-expanded {
+  margin-left: -20px;
+  margin-right: -20px;
+}
+
+.glyphicon-spin {
+    animation: spin 2s infinite linear;
+}
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+
+.icon-link {
+  &:hover {
+    text-decoration: none;
+  }
+  span.glyphicon, &.glyphicon {
+    font-size: 0.6em;
+    position: relative;
+    top: -2px;
+    display: inline-block;
+  }
+}
+
+.float-right {
+  float: right;
+  display: inline-block;
+}

@@ -1,0 +1,4 @@
+<div class="spoiler" ng-class="{closed:vm.closed}">
+  <a ng-click="vm.toggle()" ng-bind="vm.title + '  [click to '+(vm.closed ? 'show':'hide')+']'"></a>
+  <div ng-transclude></div>
+</div>

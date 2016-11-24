@@ -1,0 +1,57 @@
+
+<h3 ng-show="vm.series">
+  <span ng-show="vm.database">
+    <a ui-sref="sample({database:cell, measurement:null})">databases</a> > <span ng-bind="vm.database"></span> >
+  </span>
+  <span ng-show="vm.measurement">
+    <a ui-sref="sample({database:vm.database, measurement:cell})">measurements</a> >
+  </span>
+  <span ng-bind="vm.series.name"></span>
+</h3>
+
+<div ng-show="vm.database && vm.measurement" class="well well-sm " style="margin:10px; display:inline-block; width:100%">
+    <p>
+      <h4 style="display:inline-block;"><label class="label label-success" style="padding:5px; margin:10px;">
+        <span class="glyphicon glyphicon-ok"></span>
+        Sample Saved
+      </label></h4>
+      <button ng-click="vm.reload()" class="btn btn-info ">
+        <span class="glyphicon glyphicon-refresh"></span>
+        Reload
+      </button>
+
+      <div style="float:right;">
+        Query Example: <code>environment = 'staging'</code>
+      </div>
+    </p>
+    <p>
+      select * from "<span ng-bind="vm.database"></span>"."<span ng-bind="vm.measurement"></span>"
+      where time < $timeFilter AND
+      <input type="text" class="form-control" ng-model="vm.queryWhere" style='width:200px; display:inline-block;'></input>
+      <button ng-click="vm.reload()" class="btn btn-info ">
+        <span class="glyphicon glyphicon-refresh"></span>
+        Query
+      </button>
+    </p>
+</div>
+
+
+
+<table class="table sample" ng-show="vm.series">
+<thead>
+  <tr>
+    <th ng-repeat="column in vm.series.columns track by $index" >
+      <span ng-bind="column"></span>
+    </th>
+  </tr>
+</thead>
+<tbody>
+  <tr ng-repeat="row in vm.series.values track by $index">
+    <td ng-repeat="cell in row track by $index">
+      <a ng-bind="cell" ng-show="!vm.database" ui-sref="sample({database:cell, measurement:null})"></a>
+      <a ng-bind="cell" ng-show="vm.database && !vm.measurement" ui-sref="sample({database:vm.database, measurement:cell})"></a>
+      <span ng-bind="cell" ng-show="vm.database && vm.measurement"></span>
+    </td>
+  </tr>
+</tbody>
+</table>
