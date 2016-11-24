@@ -8,6 +8,10 @@ It is meant to be run in docker along with a dedicated instance of kapacitor. It
 
 Currently it does not support an external kapacitor server since it wants to be able to read/truncate kapacitor's log file.
 
+## demo video
+
+https://www.youtube.com/watch?v=QGDXPUJ_An4
+
 [tickscript-studio on docker hub](https://hub.docker.com/r/sequentialread/tickscript-studio/)
 
 ## diagram
@@ -18,10 +22,6 @@ Currently it does not support an external kapacitor server since it wants to be 
 
 * Edit the `docker-compose.yml` file: set the TICKSCRIPT_STUDIO_INFLUXDB environment variables correctly for your influxdb server.
 * `docker-compose up -d`
-
-#### demo video
-
-https://www.youtube.com/watch?v=QGDXPUJ_An4
 
 ##developing on this project
 
