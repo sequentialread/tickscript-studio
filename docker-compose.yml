@@ -1,0 +1,43 @@
+version: "2"
+
+services:
+  kapacitor:
+    image: kapacitor:1.0.1
+    dns: 127.0.0.1
+    environment:
+      KAPACITOR_HOSTNAME: kapacitor
+      KAPACITOR_LOGGING_FILE: '/var/log/kapacitor/kapacitor.log'
+      KAPACITOR_INFLUXDB_0_URLS_0: 'http://tickscript-studio:8081/'
+      KAPACITOR_INFLUXDB_0_DISABLE_SUBSCRIPTIONS: 'true'
+      KAPACITOR_SLACK_ENABLED: 'true'
+      KAPACITOR_SLACK_URL: 'http://tickscript-studio:8081/alert'
+      KAPACITOR_SLACK_GLOBAL: 'true'
+    volumes:
+    - kapacitorlogs:/var/log/kapacitor
+    networks:
+      bridged-network:
+        aliases:
+         - kapacitor
+  tickscript-studio:
+    image: sequentialread/tickscript-studio:0.0.13
+    dns: 127.0.0.1
+    ports:
+    - '8081:8081'
+    environment:
+      TICKSCRIPT_STUDIO_INFLUXDB_SCHEME: 'http'
+      TICKSCRIPT_STUDIO_INFLUXDB_HOST: 'my-influx-db.com:8086'
+      TICKSCRIPT_STUDIO_INFLUXDB_USERNAME: ''
+      TICKSCRIPT_STUDIO_INFLUXDB_PASSWORD: ''
+    volumes:
+    - kapacitorlogs:/var/log/kapacitor
+    networks:
+      bridged-network:
+        aliases:
+         - tickscript-studio
+
+volumes:
+  kapacitorlogs:
+
+networks:
+  bridged-network:
+    driver: bridge

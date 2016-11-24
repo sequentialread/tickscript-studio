@@ -8,13 +8,14 @@ It is meant to be run in docker along with a dedicated instance of kapacitor. It
 
 Currently it does not support an external kapacitor server since it wants to be able to read/truncate kapacitor's log file.
 
-## build, run, and demo video
-
-https://www.youtube.com/watch?v=pKxCAkjBkq4
-
 ## diagram
 
 ![flow diagram](static/images/flow-diagram.png)
+
+## deploying using docker-compose
+
+* Edit the `docker-compose.yml` file: set the TICKSCRIPT_STUDIO_INFLUXDB environment variables correctly for your influxdb server.
+* `docker-compose up -d`
 
 ##developing on this project
 
@@ -26,9 +27,13 @@ https://www.youtube.com/watch?v=pKxCAkjBkq4
 
 #### first time local build and run process
 
-First set up the app:
+First set up the app. Please note that this DOES have to be inside your $GOPATH because the go tools still insist on it.
 
 ```
+mkdir -p $GOPATH/src/github.com/sequentialread
+cd $GOPATH/src/github.com/sequentialread
+git clone https://github.com/sequentialread/tickscript-studio.git
+cd tickscript-studio
 go get ./server
 npm install
 jspm install
@@ -90,38 +95,3 @@ docker run -d --name="influxdb" -p "8086:8086" -p "8083:8083" influxdb:1.0.1
 #### Troubleshooting
 
 JavaScript errors and HTTP errors should be logged to the console.
-
-## Building a Docker Image and Deploying with Docker Compose
-
-Check the `config-deploy.json` file and make sure that the variables match what you want for your deployed version. If you want to override any of the settings in `config-local.json`, simply copy them over to `config-deploy.json` and edit them to what they need to be.
-
-You can build a Docker image with the build script by running `./build.sh 0.0.0`. The first and only argument is the version tag for the image. You may want to edit this build script if you have a private docker registry.
-
-Once you have built your image, you can run it together with kapacitor using this `docker-compose.yml` file:
-
-```
-kapacitor:
-  image: kapacitor:1.0.1
-  environment:
-    KAPACITOR_HOSTNAME: kapacitor
-    KAPACITOR_LOGGING_FILE: '/var/log/kapacitor/kapacitor.log'
-    KAPACITOR_INFLUXDB_0_URLS_0: 'http://tickscript-studio:8081/'
-    KAPACITOR_INFLUXDB_0_DISABLE_SUBSCRIPTIONS: 'true'
-    KAPACITOR_SLACK_ENABLED: true
-    KAPACITOR_SLACK_URL: 'http://tickscript-studio:8081/alert'
-    KAPACITOR_SLACK_GLOBAL: true
-  volumes:
-  - kapacitorlogs:/var/log/kapacitor
-  links:
-  - tickscript-studio:tickscript-studio
-tickscript-studio:
-  image: tickscript-studio:0.0.0
-  command:
-  - ./tickscript-studio
-  volumes:
-  - kapacitorlogs:/var/log/kapacitor
-  links:
-  - kapacitor:kapacitor
-```
-
-Change `image: tickscript-studio:0.0.0` to match whatever you tagged your docker image as.

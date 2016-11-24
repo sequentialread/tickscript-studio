@@ -38,6 +38,11 @@ func apiProxy(response http.ResponseWriter, request *http.Request) {
 
 	client := &http.Client{}
 	proxyRequest, err := http.NewRequest(request.Method, proxyURL.String(), bytes.NewBuffer(body))
+	if err != nil {
+		response.WriteHeader(500)
+		fmt.Fprintf(response, "error getting proxy request %s", err)
+		return
+	}
 	proxyRequest.Header = http.Header{"Content-Type": []string{"application/json"}}
 
 	for k, v := range request.Header {
@@ -92,20 +97,29 @@ func __toggleDebugLog(response http.ResponseWriter, request *http.Request) {
 	fmt.Fprintf(response, "ok")
 }
 
-func initializeApiProxy() error {
+func getConfigValueFromConfigOrFromEnvironmentVariable(configName string, environmentVariable string) string {
+	environmentVariableResult := os.ExpandEnv("$" + environmentVariable)
+	configResult := config[configName]
+	if environmentVariableResult != "" {
+		return environmentVariableResult
+	}
+	if configResult != nil {
+		return configResult.(string)
+	}
+	return ""
+}
 
+func initializeApiProxy() error {
 	debugLogMode = false
 	proxyConfiguration = map[string]proxyEndpoint{
 		"influxdb": proxyEndpoint{
 			url: url.URL{
-				Scheme: config["influxDbScheme"].(string),
-				Host:   config["influxDbHost"].(string),
+				Scheme: getConfigValueFromConfigOrFromEnvironmentVariable("influxDbScheme", "TICKSCRIPT_STUDIO_INFLUXDB_SCHEME"),
+				Host:   getConfigValueFromConfigOrFromEnvironmentVariable("influxDbHost", "TICKSCRIPT_STUDIO_INFLUXDB_HOST"),
 			},
 			setAuth: func(request *http.Request, proxyRequest *http.Request) {
-				usernameRaw := config["influxDbUsername"].(string)
-				passwordRaw := config["influxDbPassword"].(string)
-				username := os.ExpandEnv(usernameRaw)
-				password := os.ExpandEnv(passwordRaw)
+				username := getConfigValueFromConfigOrFromEnvironmentVariable("influxDbUsername", "TICKSCRIPT_STUDIO_INFLUXDB_USERNAME")
+				password := getConfigValueFromConfigOrFromEnvironmentVariable("influxDbPassword", "TICKSCRIPT_STUDIO_INFLUXDB_PASSWORD")
 				if password != "" || username != "" {
 					proxyRequest.SetBasicAuth(username, password)
 				}
@@ -117,13 +131,6 @@ func initializeApiProxy() error {
 				Host:   config["kapacitorHost"].(string),
 			},
 			setAuth: func(request *http.Request, proxyRequest *http.Request) {
-				usernameRaw := config["kapacitorUsername"].(string)
-				passwordRaw := config["kapacitorPassword"].(string)
-				username := os.ExpandEnv(usernameRaw)
-				password := os.ExpandEnv(passwordRaw)
-				if password != "" || username != "" {
-					proxyRequest.SetBasicAuth(username, password)
-				}
 			},
 		},
 	}
