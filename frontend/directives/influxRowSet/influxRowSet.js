@@ -12,6 +12,7 @@ export default function registerDirective(module) {
         controllerAs: "vm",
         bindToController: true,
         controller: [function() {
+          this.formatCell = (index, data) => index == 0 ? new Date(data).toLocaleString() : data;
         }],
         scope: {
           showTitle: '@',

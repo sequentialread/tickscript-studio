@@ -8,7 +8,7 @@
 </thead>
 <tbody>
   <tr ng-repeat="row in vm.rowSet.values track by $index">
-    <td ng-repeat="cell in row track by $index" ng-bind="cell">
+    <td ng-repeat="cell in row track by $index" ng-bind="vm.formatCell($index, cell)">
     </td>
   </tr>
 </tbody>

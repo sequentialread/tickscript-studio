@@ -25,6 +25,10 @@
       </div>
     </p>
     <p>
+      number of data points:
+      <input type="number" class="form-control" ng-model="vm.numberOfDataPoints" style='width:100px; display:inline-block;'></input>
+    </p>
+    <p>
       select * from "<span ng-bind="vm.database"></span>"."<span ng-bind="vm.measurement"></span>"
       where time < $timeFilter AND
       <input type="text" class="form-control" ng-model="vm.queryWhere" style='width:200px; display:inline-block;'></input>
@@ -50,7 +54,7 @@
     <td ng-repeat="cell in row track by $index">
       <a ng-bind="cell" ng-show="!vm.database" ui-sref="sample({database:cell, measurement:null})"></a>
       <a ng-bind="cell" ng-show="vm.database && !vm.measurement" ui-sref="sample({database:vm.database, measurement:cell})"></a>
-      <span ng-bind="cell" ng-show="vm.database && vm.measurement"></span>
+      <span ng-bind="vm.formatCell($index, cell)" ng-show="vm.database && vm.measurement"></span> 
     </td>
   </tr>
 </tbody>

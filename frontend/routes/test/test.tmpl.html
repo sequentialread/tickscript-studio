@@ -102,10 +102,10 @@
       Note that this will continue to poll for 1 minute, its hard to tell when Kapacitor is "Done".
     </span>
   </div>
-  <div class="col-sm-12" ng-show="vm.graphUrl">
+  <div class="col-sm-12" ng-show="vm.svgText">
     <h4>Flow Statistics</h4>
-    <div style="overflow-x: auto;" >
-      <img style="height:70px;" ng-src="{{vm.graphUrl}}" ></img>
+    <div style="overflow-x: auto;" ng-bind-html="vm.svgText">
+
     </div>
 
   </div>

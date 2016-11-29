@@ -8,8 +8,7 @@ function DataSamplingController($state, config, RestService, CacheService) {
   this.database = $state.params.database;
   this.measurement = $state.params.measurement;
 
-  this.minimumNumberOfDataPoints = 50;
-  this.maximumNumberOfDataPoints = 100;
+  this.numberOfDataPoints = 100;
 
   this.queryWhere = CacheService.get('QueryWhere:', `${this.database}/${this.measurement}`) || '';
 
@@ -38,7 +37,7 @@ function DataSamplingController($state, config, RestService, CacheService) {
         var timeIncrement = timeIncrements.shift();
         var queryWhere = this.queryWhere.trim();
         var whereClause = `time > now() - ${timeIncrement} ${queryWhere != '' ? 'AND ' + queryWhere : ''}`;
-        var query = `select * from "${this.measurement}" where ${whereClause} limit ${this.maximumNumberOfDataPoints}`;
+        var query = `select * from "${this.measurement}" where ${whereClause} limit ${this.numberOfDataPoints}`;
 
         RestService.influxDbQuery(this.database, query)
         .then(result => {
@@ -46,7 +45,7 @@ function DataSamplingController($state, config, RestService, CacheService) {
           if(result.results[0].series && result.results[0].series[0]) {
             seriesLength = result.results[0].series[0].values.length;
           }
-          if(seriesLength < this.minimumNumberOfDataPoints) {
+          if(seriesLength < this.numberOfDataPoints) {
             tryNextTimeIncrement();
           } else {
             this.series = result.results[0].series[0];
@@ -65,6 +64,8 @@ function DataSamplingController($state, config, RestService, CacheService) {
       this.reloadQuery();
     }
   };
+
+  this.formatCell = (index, data) => index == 0 ? new Date(data).toLocaleString() : data;
 
   this.reloadQuery();
 }];

@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os/exec"
 	"sort"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -181,6 +182,9 @@ func acceptLineProtocolFromKapacitor(response http.ResponseWriter, request *http
 	}
 
 	kapacitorOutputCacheMutex.Lock()
+	if debugLogMode {
+		fmt.Printf("adding %s points  to the existing %s", strconv.Itoa(len(points)), strconv.Itoa(len(kapacitorOutputCache)))
+	}
 	kapacitorOutputCache = append(kapacitorOutputCache, points...)
 	kapacitorOutputCacheMutex.Unlock()
 }
@@ -223,7 +227,8 @@ func getOutput(response http.ResponseWriter, request *http.Request) {
 			rowBuilders[seriesName] = &rowBuilder{
 				ColumnIdsByColumn: make(map[string]*int),
 				Row: influxdbModels.Row{
-					Name: seriesName,
+					Name:    seriesName,
+					Columns: []string{"time"},
 				},
 			}
 		}
@@ -257,6 +262,7 @@ func getOutput(response http.ResponseWriter, request *http.Request) {
 	for _, point := range kapacitorOutputCache {
 		rowBuilder := rowBuilders[point.Name()]
 		values := make([]interface{}, len(rowBuilder.Row.Columns))
+		values[0] = point.Time().UnixNano() / 1000000
 		for _, tag := range point.Tags() {
 			tagName := string(tag.Key)
 			values[*rowBuilder.ColumnIdsByColumn[tagName]] = string(tag.Value)
@@ -292,6 +298,9 @@ func clearAlerts(response http.ResponseWriter, request *http.Request) {
 func clearOutput(response http.ResponseWriter, request *http.Request) {
 
 	kapacitorOutputCacheMutex.Lock()
+	if debugLogMode {
+		fmt.Printf("clearing %s points", strconv.Itoa(len(kapacitorOutputCache)))
+	}
 	kapacitorOutputCache = make([]influxdbModels.Point, 0)
 	kapacitorOutputCacheMutex.Unlock()
 }

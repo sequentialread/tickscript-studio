@@ -19,7 +19,7 @@ export default function registerDirective(module) {
             if(this.activeRequests) {
               var now = Number(new Date());
               this.activeRequests.forEach(x => x.startDate = x.startDate || now);
-              var newLongRunningRequests = this.activeRequests.filter(x => (now - x.startDate) > 2000);
+              var newLongRunningRequests = this.activeRequests.filter(x => (now - x.startDate) > 2000 && x.url);
               if(this.longRunningRequests.length != newLongRunningRequests.length) {
                 $timeout(() => this.longRunningRequests = newLongRunningRequests, 1);
               }

@@ -90,12 +90,12 @@ $1 -> $2 [label="$3"];`,
 	}
 	for _, searchAndReplace := range dotPreProcess {
 		search, err := regexp.Compile(searchAndReplace[0])
-		dot = search.ReplaceAllString(dot, searchAndReplace[1])
 		if err != nil {
 			response.WriteHeader(500)
-			fmt.Fprintf(response, "500 error can't process dot file: %s, \n\n %s", dot, err)
+			fmt.Fprintf(response, "500 error can't compile regex: %s, \n\n %s", searchAndReplace[0], err)
 			return
 		}
+		dot = search.ReplaceAllString(dot, searchAndReplace[1])
 	}
 
 	dotProcess := exec.Command("dot", "-Tsvg")

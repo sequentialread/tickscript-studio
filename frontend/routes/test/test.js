@@ -4,8 +4,10 @@ import template from './test.tmpl.html!text'
 //import waitForKapacitorModalTemplate from './waitForKapacitorModal.tmpl.html!text'
 import enterUsernameTemplate from './enterUsernameModal.tmpl.html!text'
 
-var TICKScriptTestingController = ['$state', '$uibModal', '$interval', '$timeout', 'config', 'RestService', 'CacheService',
-function TICKScriptTestingController($state, $uibModal, $interval, $timeout, config, RestService, CacheService) {
+var TICKScriptTestingController = ['$state', '$uibModal', '$interval', '$timeout', '$sce',
+        'config', 'RestService', 'CacheService',
+function TICKScriptTestingController($state, $uibModal, $interval, $timeout, $sce,
+         config, RestService, CacheService) {
 
   this.database = $state.params.database;
   this.measurement = $state.params.measurement;
@@ -13,6 +15,8 @@ function TICKScriptTestingController($state, $uibModal, $interval, $timeout, con
 
   this.userId = CacheService.get('Lock:','userId');
   this.userName = CacheService.get('Lock:','userName');
+
+  var graphSVGScale = 0.6;
 
   var guid = () => {
     var s4 = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
@@ -237,7 +241,7 @@ function TICKScriptTestingController($state, $uibModal, $interval, $timeout, con
 
     var waitForOneSecond = () => {
       return new Promise((resolve, reject) => {
-        $timeout(resolve, 500);
+        $timeout(resolve, 1000);
       });
       // return $uibModal.open({
       //   template: waitForKapacitorModalTemplate,
@@ -264,7 +268,7 @@ function TICKScriptTestingController($state, $uibModal, $interval, $timeout, con
         this.kapacitorLogs = '';
         this.output = [];
         this.alerts =  [];
-        this.graphUrl = null;
+        this.svgText = "";
         return Promise.all([
           RestService.kapacitorGet('kapacitor/v1/tasks'),
           RestService.wrapperDelete("/output"),
@@ -300,12 +304,22 @@ function TICKScriptTestingController($state, $uibModal, $interval, $timeout, con
         return Promise.all([
           RestService.wrapperPoll("/kapacitorLogs"),
           RestService.wrapperPoll("/output"),
-          RestService.wrapperPoll("/alerts")
+          RestService.wrapperPoll("/alerts"),
+          RestService.wrapperPoll("/graph.svg", {ignoreErrors: true})
         ]).then(results => {
             this.kapacitorLogs = results[0];
             this.output = results[1];
             this.alerts =  results[2];
-            this.graphUrl = '/graph.svg?cacheBust='+Math.random();
+            var svgTextWithHeader = results[3];
+            var svgText = svgTextWithHeader.substring(svgTextWithHeader.indexOf("<svg"));
+            var matches = /<svg width="(\d+)([a-z]+)" height="(\d+)([a-z]+)"/.exec(svgText);
+            if(matches && matches.length) {
+              var width = Math.round(matches[1]*graphSVGScale);
+              var height = Math.round(matches[3]*graphSVGScale);
+              var unit = matches[2];
+              svgText = svgText.replace(matches[0], `<svg width="${width}${unit}" height="${height}${unit}"`);
+              this.svgText = $sce.trustAsHtml(svgText);
+            }
         });
       };
       pollForResults();
