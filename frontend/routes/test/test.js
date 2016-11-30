@@ -62,7 +62,6 @@ function TICKScriptTestingController($state, $uibModal, $interval, $timeout, $sc
         "rp": ""
       }
     ],
-    "script": "$SCRIPT",
     "status": "enabled"
   };
 

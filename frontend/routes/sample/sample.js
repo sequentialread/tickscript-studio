@@ -50,6 +50,7 @@ function DataSamplingController($state, config, RestService, CacheService) {
           } else {
             this.series = result.results[0].series[0];
             CacheService.set('Sample:', `${this.database}/${this.measurement}`, this.series);
+            CacheService.set('SampleLineProtocol:', `${this.database}/${this.measurement}`, null);
           }
         });
       };

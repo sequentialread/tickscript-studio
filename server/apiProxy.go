@@ -54,18 +54,10 @@ func apiProxy(response http.ResponseWriter, request *http.Request) {
 	proxyConfiguration[pathElements[1]].setAuth(request, proxyRequest)
 
 	if debugLogMode {
-		proxyBody, err := ioutil.ReadAll(proxyRequest.Body)
-		if err != nil {
-			response.WriteHeader(500)
-			fmt.Fprintf(response, "500 ioutil.ReadAll err in proxy: %s", err)
-			return
-		}
-
 		fmt.Printf("url %s\n", proxyRequest.URL.String())
 		fmt.Printf("header %s\n", proxyRequest.Header)
 		fmt.Printf("method %s\n", proxyRequest.Method)
 		fmt.Printf("body %s\n", body)
-		fmt.Printf("proxyBody %s\n", proxyBody)
 	}
 
 	proxyResponse, err := client.Do(proxyRequest)
