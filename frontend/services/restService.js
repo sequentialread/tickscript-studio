@@ -11,7 +11,7 @@ function RestService($http, $httpParamSerializerJQLike, $rootScope, $uibModal,
   window.$rootScope = $rootScope;
 
   var wwwFormEncode = (string) => {
-    return encodeURIComponent(string).replace('%20', '+');
+    return encodeURIComponent(string).split('%20').join('+');
   };
 
   this.influxDbQuery = (database, query, options) => httpWrapper(

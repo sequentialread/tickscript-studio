@@ -133,11 +133,16 @@ function TICKScriptTestingController($state, $uibModal, $interval, $timeout, $sc
       var tagKeysResult = tagKeys.series ? tagKeys.series[0].values.map(x => x[0]) : [];
       var fieldKeysResult = fieldKeys.series ? fieldKeys.series[0].values.map(x => x[0]) : [];
 
-      var influxEscape = (s) => {
-        return String(s).replace(',', '\\,')
-          .replace('=', '\\=')
-          .replace(' ', '\\ ')
-          .replace('"', '\\"');
+      var influxEscape = (s, stringsInQuotes) => {
+        var raw = String(s).split(',').join('\\,')
+          .split('=').join('\\=')
+          .split(' ').join('\\ ')
+          .split('""').join('\\"');
+
+        if(stringsInQuotes && isNaN(Number(raw)) && raw != "false" && raw != "true") {
+          return `"${raw}"`;
+        }
+        return raw;
       };
 
       return data.values.map(row => {
@@ -148,12 +153,13 @@ function TICKScriptTestingController($state, $uibModal, $interval, $timeout, $sc
           .filter(x => x.value !== null && x.value !== '');
 
         var nameValueToInfluxKV = (x) => `${influxEscape(x.name)}=${influxEscape(x.value)}`;
+        var nameValueToInfluxKVWithStringsInQuotes = (x) => `${influxEscape(x.name)}=${influxEscape(x.value, true)}`;
 
         this.tags = rowWithNameValue.filter(x => tagKeysResult.indexOf(x.name) != -1);
         this.metrics = rowWithNameValue.filter(x => fieldKeysResult.indexOf(x.name) != -1);
 
         var tagsLineProtocol = this.tags.map(nameValueToInfluxKV).join(',');
-        var metricsLineProtocol = this.metrics.map(nameValueToInfluxKV).join(',');
+        var metricsLineProtocol = this.metrics.map(nameValueToInfluxKVWithStringsInQuotes).join(',');
 
         return `${influxEscape(this.measurement)}${tagsLineProtocol.length ? ',' : ''}${tagsLineProtocol} ${metricsLineProtocol} ${dateNs}`;
       }).join('\n');
