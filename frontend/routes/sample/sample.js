@@ -46,7 +46,7 @@ function DataSamplingController($state, config, RestService, CacheService) {
           if(result.results[0].series && result.results[0].series[0]) {
             seriesLength = result.results[0].series[0].values.length;
           }
-          if(seriesLength < this.minimumNumberOfDataPoints) {
+          if(seriesLength < this.minimumNumberOfDataPoints && timeIncrements.length > 0) {
             tryNextTimeIncrement();
           } else {
             this.series = result.results[0].series[0];
