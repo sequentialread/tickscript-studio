@@ -1,4 +1,4 @@
-##tickscript studio
+## tickscript studio
 
 ![logo](readme/studio.png)
 
@@ -23,7 +23,7 @@ Currently it does not support an external kapacitor server since it wants to be 
 * Edit the `docker-compose.yml` file: set the TICKSCRIPT_STUDIO_INFLUXDB environment variables correctly for your influxdb server.
 * `docker-compose up -d`
 
-##developing on this project
+## developing on this project
 
 #### Development Pre-requisites
 

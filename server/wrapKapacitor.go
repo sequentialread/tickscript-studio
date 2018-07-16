@@ -222,7 +222,7 @@ func getOutput(response http.ResponseWriter, request *http.Request) {
 	rowBuilders := make(map[string]*rowBuilder)
 
 	for _, point := range kapacitorOutputCache {
-		seriesName := point.Name()
+		seriesName := string(point.Name())
 		if rowBuilders[seriesName] == nil {
 			rowBuilders[seriesName] = &rowBuilder{
 				ColumnIdsByColumn: make(map[string]*int),
@@ -240,7 +240,8 @@ func getOutput(response http.ResponseWriter, request *http.Request) {
 				columnIdsByColumn[tagName] = &defaultInt
 			}
 		}
-		for fieldName, _ := range point.Fields() {
+		fields, _ := point.Fields()
+		for fieldName, _ := range fields {
 			if columnIdsByColumn[fieldName] == nil {
 				columnIdsByColumn[fieldName] = &defaultInt
 			}
@@ -260,14 +261,15 @@ func getOutput(response http.ResponseWriter, request *http.Request) {
 	}
 
 	for _, point := range kapacitorOutputCache {
-		rowBuilder := rowBuilders[point.Name()]
+		rowBuilder := rowBuilders[string(point.Name())]
 		values := make([]interface{}, len(rowBuilder.Row.Columns))
 		values[0] = point.Time().UnixNano() / 1000000
 		for _, tag := range point.Tags() {
 			tagName := string(tag.Key)
 			values[*rowBuilder.ColumnIdsByColumn[tagName]] = string(tag.Value)
 		}
-		for fieldName, fieldValue := range point.Fields() {
+		fields, _ := point.Fields()
+		for fieldName, fieldValue := range fields {
 			values[*rowBuilder.ColumnIdsByColumn[fieldName]] = fieldValue
 		}
 		rowBuilder.Row.Values = append(rowBuilder.Row.Values, values)
